@@ -1,0 +1,36 @@
+[tool.poetry]
+name = "gnnsg"
+version = "0.0.0"
+description = "Graph Neural Networks For Systematic Generalisation"
+authors = ["Irtaza Khalid <khalidmi@cardiff.ac.uk>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/cnm13ryan/gnn-sg"
+repository = "https://github.com/cnm13ryan/gnn-sg"
+keywords = ["graph neural network", "link prediction", "systematic generalisation", "neurosymbolic", "theorem prover"]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+torch = "2.1.2"
+torch_geometric = "*"
+torchvision = "*"
+torchaudio = "*"
+numpy = "*"
+hydra-core = "*"
+wandb = "*"
+pytest = "*"
+lightning = "*"
+transformers = "*"
+matplotlib = "*"
+regex = "*"
+
+[tool.poetry.extras]
+dev = ["check-manifest"]
+in-square-brackets-test = ["wandb"]
+
+[tool.poetry.scripts]
+run = "src.train:run"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
