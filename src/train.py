@@ -188,50 +188,56 @@ def reverse_edges(edge_list):
         new_edges.append(new_edge)
     return new_edges[::-1]
 
-def get_data_loaders(fname: Union[List[str], str] = '../data/data_9b2173cf/1.2,1.3_train.csv', 
-					batch_size=128, remove_not_chains=False, reverse=False, 
-					fp_bp=False, dataset_type='clutrr'):
-	# torch.manual_seed(42)
+def get_data_loaders(fname: Union[List[str], str] = '../data/data_9b2173cf/1.2,1.3_train.csv',
+                    batch_size=128, remove_not_chains=False, reverse=False,
+                    fp_bp=False, dataset_type='clutrr'):
+    # torch.manual_seed(42)
 
-	# sanity test to make sure reverse isn't being used with fp_bp
-	assert not(reverse and fp_bp), "reverse is incompatible with fp_bp. But got both True"
-	if dataset_type != 'graphlog':
-		fname_arg = fname 
-	else: 
-		fname_arg = fname[0]
-	
-	pfname = get_pickle_filename(fname_arg, remove_not_chains=remove_not_chains, k=1)
-	if fp_bp:
-		# pickle tag mod
-		pfname = pfname.replace(".pkl", "_fp_bp.pkl")
-	
-	if not os.path.exists(pfname):
-		if dataset_type == 'clutrr':
-			data = read_datafile(fname, remove_not_chains=remove_not_chains)
-			cdata = ClutrrDataset(data, reverse, fp_bp, None, None)
-			pickle.dump(cdata, open(pfname, 'wb'))
-			log.info(f"saving preprocessed data file at: {pfname}")
-		elif dataset_type == 'graphlog':
-			assert len(fname) == 2, 'need train and val files to be separate'
-			fname_train, fname_val = fname[0], fname[1]
-			data_train = preprocess_graphlog_dataset(fname_train)
-			data_val = preprocess_graphlog_dataset(fname_val)
-			cdata_train = ClutrrDataset(data_train, reverse, fp_bp, None, None)
-			cdata_val = ClutrrDataset(data_val, reverse, fp_bp, cdata_train.unique_edge_labels, cdata_train.unique_query_labels)
-			cdata = [cdata_train, cdata_val]
-			pickle.dump(cdata, open(pfname, 'wb'))
-			log.info(f"saving preprocessed data file at: {pfname}")
-		elif dataset_type == 'rcc8':
-			data = load_rcc8_file_as_dict(fname)
-			cdata = ClutrrDataset(data, reverse, fp_bp, None, None)
-			pickle.dump(cdata, open(pfname, 'wb'))
-			log.info(f"saving preprocessed data file at: {pfname}")
-		else:
-			raise NotImplementedError
-	else:
-		log.info(f"preprocessed data file loaded from: {pfname}")
-		cdata = pickle.load(open(pfname, 'rb'))
-	return make_data_loaders(cdata, batch_size, train_ratio=0.8, fp_bp=fp_bp, dataset_type=dataset_type)
+    # sanity test to make sure reverse isn't being used with fp_bp
+    assert not (reverse and fp_bp), "reverse is incompatible with fp_bp. But got both True"
+    if dataset_type != 'graphlog':
+        fname_arg = fname
+    else:
+        fname_arg = fname[0]
+
+    pfname = get_pickle_filename(fname_arg, remove_not_chains=remove_not_chains, k=1)
+    if fp_bp:
+        # pickle tag mod
+        pfname = pfname.replace(".pkl", "_fp_bp.pkl")
+
+    print(f"Current working directory: {os.getcwd()}")
+    print(f"Expected pickle file path: {os.path.abspath(pfname)}")
+
+    if not os.path.exists(pfname):
+        print(f"Pickle file does not exist: {pfname}")
+        if dataset_type == 'clutrr':
+            data = read_datafile(fname, remove_not_chains=remove_not_chains)
+            cdata = ClutrrDataset(data, reverse, fp_bp, None, None)
+            pickle.dump(cdata, open(pfname, 'wb'))
+            log.info(f"saving preprocessed data file at: {pfname}")
+        elif dataset_type == 'graphlog':
+            assert len(fname) == 2, 'need train and val files to be separate'
+            fname_train, fname_val = fname[0], fname[1]
+            data_train = preprocess_graphlog_dataset(fname_train)
+            data_val = preprocess_graphlog_dataset(fname_val)
+            cdata_train = ClutrrDataset(data_train, reverse, fp_bp, None, None)
+            cdata_val = ClutrrDataset(data_val, reverse, fp_bp, cdata_train.unique_edge_labels, cdata_train.unique_query_labels)
+            cdata = [cdata_train, cdata_val]
+            pickle.dump(cdata, open(pfname, 'wb'))
+            log.info(f"saving preprocessed data file at: {pfname}")
+        elif dataset_type == 'rcc8':
+            print(f"Loading RCC8 data from file: {fname}")
+            data = load_rcc8_file_as_dict(fname)
+            cdata = ClutrrDataset(data, reverse, fp_bp, None, None)
+            pickle.dump(cdata, open(pfname, 'wb'))
+            log.info(f"saving preprocessed data file at: {pfname}")
+        else:
+            raise NotImplementedError
+    else:
+        log.info(f"preprocessed data file loaded from: {pfname}")
+        cdata = pickle.load(open(pfname, 'rb'))
+    
+    return make_data_loaders(cdata, batch_size, train_ratio=0.8, fp_bp=fp_bp, dataset_type=dataset_type)
 
 def get_dataset_test(fname: str = '../data/data_9b2173cf/1.3_test.csv',
                      unique_edge_labels=None, 

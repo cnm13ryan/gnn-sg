@@ -445,26 +445,29 @@ def get_lr(optimizer):
 	
 
 def load_rcc8_file_as_dict(train_fname) -> dict:
-	edge_ls = []
-	edge_labels_ls = []
-	query_edge_ls = []
-	query_label_ls = []
+    edge_ls = []
+    edge_labels_ls = []
+    query_edge_ls = []
+    query_label_ls = []
 
-	with open(train_fname, 'r') as f:
-		reader = csv.DictReader(f)
-		for row in reader:
-			edges = ast.literal_eval(row['edges'])
-			edge_labels = ast.literal_eval(row['edge_labels'])
-			query_edge = ast.literal_eval(row['query_edge'])
-			query_label = row['query_label']
+    print(f"Attempting to open file: {os.path.abspath(train_fname)}")
+    
+    with open(train_fname, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            edges = ast.literal_eval(row['edges'])
+            edge_labels = ast.literal_eval(row['edge_labels'])
+            query_edge = ast.literal_eval(row['query_edge'])
+            query_label = row['query_label']
 
-			edge_ls.append(edges)
-			edge_labels_ls.append(edge_labels)
-			query_edge_ls.append(query_edge)
-			query_label_ls.append(query_label)
-	data = {'edges':edge_ls,'edge_labels':edge_labels_ls,'query_edge':query_edge_ls,'query_label':query_label_ls}
-	print(f"loaded {train_fname}: {len(data)} instances.")
-	return data
+            edge_ls.append(edges)
+            edge_labels_ls.append(edge_labels)
+            query_edge_ls.append(query_edge)
+            query_label_ls.append(query_label)
+    
+    data = {'edges': edge_ls, 'edge_labels': edge_labels_ls, 'query_edge': query_edge_ls, 'query_label': query_label_ls}
+    print(f"loaded {train_fname}: {len(data)} instances.")
+    return data
 
 def get_sizes_to_unbatch_edge_index(
     edge_index: Tensor,
