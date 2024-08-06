@@ -22,7 +22,8 @@ from hydra import compose, initialize
 from omegaconf import DictConfig, OmegaConf
 import re
 import wandb
-from src.utils import (
+# from src.utils import (
+from utils import (
     edge_labels_to_indices,
     load_jsonl,
     load_rcc8_file_as_dict, 
@@ -30,7 +31,7 @@ from src.utils import (
 	mkdirs, get_most_recent_model_str, 
 	remove_not_best_models,
 	save_results_models_config,
-	get_temp_schedule,
+	# get_temp_schedule,
 	get_acc,
 	read_datafile,
 	save_model, 
