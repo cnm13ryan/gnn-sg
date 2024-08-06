@@ -22,12 +22,12 @@ e.g. `CUDA=cpu` for a machine without a gpu. See https://pypi.org/project/torch-
 
 
 ```python
-python src/train.py experiments=`pick a dataset model config file from configs/experiments`
+python train.py experiments=`pick a dataset model config file from configs/experiments`
 ```
 
 The config can be easily adjusted from the command line using a dot file path notation with the `experiments.` prefix. For example, running for 10 epochs on the rcc8 dataset amounts to:
 ```
-python src/train.py experiments=fb_model_rcc8 experiments.epochs=10
+python train.py experiments=fb_model_rcc8 experiments.epochs=10
 ```
 
 ## Cite
