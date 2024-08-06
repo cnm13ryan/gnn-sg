@@ -120,14 +120,21 @@ class ClutrrDataset(Dataset):
 			item['rev_edge_type'] = torch.LongTensor(self.rev_edge_labels[index])
 		return item
 	
+# def remove_last_k_path(fname, k=1):
+# 	splitf = fname.split('/')
+# 	# if k == 1:
+# 	# 	head, tail = splitf[:-k], splitf[-1]
+# 	# else:
+# 	# 	head, tail = splitf[:-k], splitf[-k:]
+#     head, tail = splitf[:-k], splitf[-k:]
+# 	# return '/'.join(head), tail
+#     return '/'.join(head), '/'.join(tail)
+
 def remove_last_k_path(fname, k=1):
-	splitf = fname.split('/')
-	if k == 1:
-		head, tail = splitf[:-k], splitf[-1]
-	else:
-		head, tail = splitf[:-k], splitf[-k:]
-	return '/'.join(head), tail
-	
+    splitf = fname.split('/')
+    head, tail = splitf[:-k], splitf[-k:]
+    return '/'.join(head), '/'.join(tail)
+
 def make_geo_transform(dataset, fp_bp=False):
 	if fp_bp:
 		return [HeteroData(
@@ -164,7 +171,8 @@ def get_pickle_filename(fname, remove_not_chains=False, add_prefix=True, k=1):
 	if add_prefix:
 		pickle_path = '../'+pickle_path
 	if not os.path.exists(pickle_path):
-		os.mkdir(pickle_path)
+		# os.mkdir(pickle_path)
+		os.makedirs(pickle_path) # Use os.makedirs to create all intermediate directories
 	pfname = pickle_path + f"{file}_chains_{remove_not_chains}.pkl"
 	return pfname
 
