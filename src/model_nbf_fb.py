@@ -15,9 +15,11 @@ The recipe from an implementation POV is:
 """
 import torch
 import torch.nn as nn
-from src.model_nbf_general import NBFCluttr, NBF_base, entropy, compute_sim, gumbel_softmax_sample
+# from src.model_nbf_general import NBFCluttr, NBF_base, entropy, compute_sim, gumbel_softmax_sample
+from model_nbf_general import NBFCluttr, NBF_base, entropy, compute_sim, gumbel_softmax_sample
 from torch_scatter import scatter_min, scatter_softmax, scatter_add, scatter_mul, scatter_logsumexp
-from src.utils import get_shortest_path_indices_from_edge_index, entropy_diff_agg, Batcher, get_all_source_sink_paths_from_edge_index, get_sizes_to_unbatch_edge_index
+# from src.utils import get_shortest_path_indices_from_edge_index, entropy_diff_agg, Batcher, get_all_source_sink_paths_from_edge_index, get_sizes_to_unbatch_edge_index
+from utils import get_shortest_path_indices_from_edge_index, entropy_diff_agg, Batcher, get_all_source_sink_paths_from_edge_index, get_sizes_to_unbatch_edge_index
 
 device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
