@@ -10,12 +10,13 @@ repository = "https://github.com/cnm13ryan/gnn-sg"
 keywords = ["graph neural network", "link prediction", "systematic generalisation", "neurosymbolic", "theorem prover"]
 
 [tool.poetry.dependencies]
-python = ">=3.8"
-torch = "2.1.2"
+python = ">=3.9"
+triton = "^2.2.0"
+torch = "^2.2.0"
 torch_geometric = "*"
 torchvision = "*"
 torchaudio = "*"
-numpy = "*"
+numpy = "2.0.0"
 hydra-core = "*"
 wandb = "*"
 pytest = "*"
@@ -23,6 +24,9 @@ lightning = "*"
 transformers = "*"
 matplotlib = "*"
 regex = "*"
+setuptools = "*"
+wheel = "*"
+cython = "*"
 
 [tool.poetry.extras]
 dev = ["check-manifest"]
