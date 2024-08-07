@@ -2,24 +2,25 @@
 
 ## Getting started
 
-Depending on how big this project will eventually get, we offer this project as `dev` package that can be built in editable mode:
-
 Create a virtual environment and install the necessary packages below
 
 ```python3
 python -m venv venv
-source venv/bin/activate # for linux
-.\venv\Scripts\activate # for windows
-pip install -e .
+```
+```python3
+source venv/bin/activate # for linux/macOS
+```
+```python3
+pip install -r requirements.txt 
 ```
 Also install the following packages using the link relevant for your hardware:
 ```
-pip install torch-scatter torch-sparse -f https://data.pyg.org/whl/torch-2.1.0+${CUDA}.html
+./install_torch_scatter_sparse.sh
 ```
-e.g. `CUDA=cpu` for a machine without a gpu. See https://pypi.org/project/torch-sparse/ 
+See https://pypi.org/project/torch-sparse/ 
+
 
 ## To reproduce results in the paper just build and run the following command in `src`
-
 
 ```python
 python train.py experiments=`pick a dataset model config file from configs/experiments`
