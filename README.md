@@ -13,6 +13,9 @@ source venv/bin/activate # for linux/macOS
 ```python3
 pip install -r requirements.txt 
 ```
+Make sure your system, if with CUDA supported GPUs, need to comply with cuda 12.1. 
+gcc and g++ also needs to be 12.0.0 versions.
+
 Also install the following packages using the link relevant for your hardware:
 ```
 ./install_torch_scatter_sparse.sh
