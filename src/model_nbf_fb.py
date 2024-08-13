@@ -328,38 +328,47 @@ class NBFdistR(NBF_base):
         return source_embeddings
     
     def do_a_graph_prop(self, batch, forward=True):
-        boundary = self.make_boundary(batch, forward=forward)
-            
+        # Ensure that the batch tensors are on the same device as the source embedding
+        device = self.source_embedding.device  # Assuming self.source_embedding is always on the correct device
+        
+        # Move edge_index and edge_type to the correct device
+        edge_index = batch.edge_index.to(device)
+        edge_type = batch.edge_type.to(device)
+        
+        # Make boundary and ensure it is on the correct device
+        boundary = self.make_boundary(batch, forward=forward).to(device)
+        
         inp = boundary
         for i in range(len(self.BF_layers)):
             return_probas = True if i == len(self.BF_layers) - 1 else False
+            
             if self.shared:
                 if forward:
                     self.BF_layers[0].flow = 'source_to_target'
                 else:
                     self.BF_layers[0].flow = 'target_to_source'
-                hidden = self.BF_layers[0](inp, batch.edge_index, batch.edge_type,
+                hidden = self.BF_layers[0](inp, edge_index, edge_type,
                                            return_probas=return_probas,
-                                           forward=forward, 
-                                        )
+                                           forward=forward)
             else:
                 if forward:
                     self.BF_layers[0].flow = 'source_to_target'
                 else:
                     self.BF_layers[0].flow = 'target_to_source'
-                hidden = self.BF_layers[i](inp, batch.edge_index, batch.edge_type, 
+                hidden = self.BF_layers[i](inp, edge_index, edge_type,
                                            return_probas=return_probas,
-                                           forward=forward,
-                                        )
+                                           forward=forward)
+            
             if return_probas:
                 hidden, probas = hidden
+            
             if self.residual:
                 hidden = hidden + inp
-            # The boundary is initialized as a fixed embedding that already satisfies the prob axioms
-            # N.B.: cannot add unconditional self loops to fix the message disappearance problem after aggregation.
-            inp = self.one_it_source_embeddings(batch, hidden, forward=forward).reshape(*inp.shape)
-    
-        return hidden, probas
+            
+            # Ensure hidden is on the correct device
+            inp = self.one_it_source_embeddings(batch, hidden.to(device), forward=forward).reshape(*inp.shape)
+
+        return hidden
 
     def forward(self, batch_fb, fw_only=False, bw_only=False, 
                 use_margin_loss=False, 
