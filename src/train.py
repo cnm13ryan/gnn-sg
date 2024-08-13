@@ -10,9 +10,9 @@ from torch.optim import AdamW
 from torch import nn
 from torch_sparse import add_
 # from src.model_nbf_general import entropy, NBF, NBFCluttr
-from model_nbf_general import entropy, NBF, NBFCluttr
+from .model_nbf_general import entropy, NBF, NBFCluttr
 # from src.model_nbf_fb import NBFdistR, NBFdistRModule, get_margin_loss_term, margin_loss
-from model_nbf_fb import NBFdistR, NBFdistRModule, get_margin_loss_term, margin_loss
+from .model_nbf_fb import NBFdistR, NBFdistRModule, get_margin_loss_term, margin_loss
 from typing import Union, List, Callable
 import os
 import numpy as np
@@ -23,7 +23,7 @@ from omegaconf import DictConfig, OmegaConf
 import re
 import wandb
 # from src.utils import (
-from utils import (
+from .utils import (
     edge_labels_to_indices,
     load_jsonl,
     load_rcc8_file_as_dict, 

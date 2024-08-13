@@ -10,7 +10,7 @@ from typing import Callable, List, Union, Tuple
 import torch
 from torch import Tensor, LongTensor
 # from src.model_nbf_general import NBFCluttr, compute_sim, entropy
-from model_nbf_general import NBFCluttr, compute_sim, entropy
+from .model_nbf_general import NBFCluttr, compute_sim, entropy
 from torch.optim import Optimizer
 from torch.nn import Module
 import random
