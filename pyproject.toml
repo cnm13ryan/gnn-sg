@@ -131,7 +131,7 @@ pytest = "8.3.2"
 
 [tool.poetry.extras]
 dev = ["check-manifest"]
-in-square-brackets-test = ["wandb"]
+test = ["wandb"]
 
 [tool.poetry.scripts]
 run = "src.train:run"
