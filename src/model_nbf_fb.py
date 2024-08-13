@@ -304,17 +304,27 @@ class NBFdistR(NBF_base):
         num_nodes = batch.num_nodes
         se_dim_size = self.source_embedding.shape[-1]
 
+        # Ensure that the device is consistent
+        device = self.source_embedding.device  # Get the device from the source embedding
+
         source_embeddings = torch.zeros(size=(num_nodes, se_dim_size), device=device)
         source_embeddings = self.one_it_source_embeddings(batch, source_embeddings, forward=forward)
-        # now add the filling for every other node
-        # uniform (max entropy filling)
+
+        # Now add the filling for every other node
+        # Uniform (max entropy filling)
         not_sources_ind = torch.arange(num_nodes, device=device)
+
+        # Move batch.target_edge_index to the correct device
         if forward:
-            not_sources_ind = not_sources_ind[~torch.isin(not_sources_ind, batch.target_edge_index[0])]
+            target_edges = batch.target_edge_index[0].to(device)
         else:
-            not_sources_ind = not_sources_ind[~torch.isin(not_sources_ind, batch.target_edge_index[1])]
-        repeated_filling = torch.ones((not_sources_ind.shape[0], se_dim_size), device=device) / (self.hidden_dim//self.facets)
-        source_embeddings[not_sources_ind] =  repeated_filling
+            target_edges = batch.target_edge_index[1].to(device)
+
+        not_sources_ind = not_sources_ind[~torch.isin(not_sources_ind, target_edges)]
+        
+        repeated_filling = torch.ones((not_sources_ind.shape[0], se_dim_size), device=device) / (self.hidden_dim // self.facets)
+        source_embeddings[not_sources_ind] = repeated_filling
+        
         return source_embeddings
     
     def do_a_graph_prop(self, batch, forward=True):
