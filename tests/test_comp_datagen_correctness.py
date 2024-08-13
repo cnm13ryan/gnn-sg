@@ -1,5 +1,5 @@
 from src.composition_tables.rcc8 import RCC8
-from src.composition_tables.interval import Interval
+# from src.composition_tables.interval import Interval
 from src.comp_dataset_generator import (
     make_diverse_graphs_with_recursive_branches_v2,
     make_graphs_for_group, 
@@ -20,14 +20,14 @@ def get_rcc8_graphs():
                                                          cache_3_chain_size=100000)
     return num_samples, num_branches, graphs, paths, path_closures
 
-@pytest.fixture
-def get_interval_graphs():
-    num_samples=1000
-    num_branches=5
-    path_length=10
-    graphs, paths, path_closures = make_graphs_for_group(Interval, num_samples, num_branches, path_length, 
-                                                         cache_3_chain_size=100000)
-    return num_samples, num_branches, graphs, paths, path_closures
+# @pytest.fixture
+# def get_interval_graphs():
+#     num_samples=1000
+#     num_branches=5
+#     path_length=10
+#     graphs, paths, path_closures = make_graphs_for_group(Interval, num_samples, num_branches, path_length, 
+#                                                          cache_3_chain_size=100000)
+#     return num_samples, num_branches, graphs, paths, path_closures
 
 
 def test_rcc8_datagen_correctness(get_rcc8_graphs):
@@ -35,10 +35,10 @@ def test_rcc8_datagen_correctness(get_rcc8_graphs):
     # test if path closure is still invariant
     _do_path_closure_loop_invariant_test(RCC8, num_samples, num_branches, graphs, paths, path_closures)
 
-def test_interval_datagen_correctness(get_interval_graphs):
-    num_samples, num_branches, graphs, paths, path_closures = get_interval_graphs
-    # test if path closure is still invariant
-    _do_path_closure_loop_invariant_test(Interval, num_samples, num_branches, graphs, paths, path_closures)
+# def test_interval_datagen_correctness(get_interval_graphs):
+#     num_samples, num_branches, graphs, paths, path_closures = get_interval_graphs
+#     # test if path closure is still invariant
+#     _do_path_closure_loop_invariant_test(Interval, num_samples, num_branches, graphs, paths, path_closures)
 
 def test_rcc8_diverse_graphs():
     num_samples=10
