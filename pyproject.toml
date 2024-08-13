@@ -142,5 +142,5 @@ url = "https://data.pyg.org/whl/torch-2.3.0+cu121.html"
 priority = "supplemental"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
