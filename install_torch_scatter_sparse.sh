@@ -51,7 +51,8 @@ function set_cuda_arch_list() {
 
 # Function to install packages with the chosen CUDA version tag
 function install_packages() {
-    poetry run pip install torch-scatter torch-sparse -f https://data.pyg.org/whl/torch-${pytorch_version}+${cuda_tag}.html
+    # Add PyTorch and its dependencies using poetry
+    poetry add torch-scatter torch-sparse --source "https://data.pyg.org/whl/torch-${pytorch_version}+${cuda_tag}.html"
 }
 
 # Check PyTorch version
