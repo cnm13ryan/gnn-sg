@@ -4,14 +4,11 @@
 
 Create a virtual environment and install the necessary packages below
 
-```python3
+```bash
 python -m venv venv
-```
-```python3
 source venv/bin/activate # for linux/macOS
-```
-```python3
-pip install -r requirements.txt 
+pip install --upgrade pip setuptools wheel
+pip install -r requirements.txt
 ```
 Make sure your system, if with CUDA supported GPUs, need to comply with cuda 12.1. 
 gcc and g++ also needs to be 12.0.0 versions.
